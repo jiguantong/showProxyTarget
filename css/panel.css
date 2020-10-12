@@ -132,8 +132,9 @@ body {
 }
 .tabBtnDiv {
     position: fixed;
-    right: 25%;
     left: 25%;
+    height: 22px;
+    overflow: hidden;
 }
 
 .tabBtn {
