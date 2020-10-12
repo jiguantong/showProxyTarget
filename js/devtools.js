@@ -14,7 +14,7 @@ chrome.devtools.network.onRequestFinished.addListener(
               // );
         });
         for(var i=0;i<request.request.headers.length;i++){
-              if(request.request.headers[i].name='routeUrl'){
+              if(request.request.headers[i].name=='routeUrl'){
                     request.request.url = request.request.headers[i].value;
               }
         }
