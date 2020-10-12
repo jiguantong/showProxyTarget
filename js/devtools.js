@@ -7,12 +7,17 @@ chrome.devtools.network.onRequestFinished.addListener(
               if(body){
                     request.responseBody = JSON.parse(body);
               }
-              chrome.devtools.inspectedWindow.eval(
-                'console.log('+
-                JSON.stringify(request) + ')'
-                // 'console.log(document.getElementsByClass("content"))'
-              );
+              // chrome.devtools.inspectedWindow.eval(
+              //   'console.log('+
+              //   JSON.stringify(request) + ')'
+              //   // 'console.log(document.getElementsByClass("content"))'
+              // );
         });
+        for(var i=0;i<request.request.headers.length;i++){
+              if(request.request.headers[i].name='routeUrl'){
+                    request.request.url = request.request.headers[i].value;
+              }
+        }
         // chrome.devtools.inspectedWindow.eval(
         //   'console.log('+
         //   JSON.stringify(request) + ')'
@@ -43,7 +48,7 @@ function appendRequest(request) {
       var $tableContainer = $("#tableContainer");
       $tableContainer.animate({
             scrollTop: $tableContainer.get(0).scrollHeight
-      }, 10);
+      }, 1);
 }
 
 function renderJson(request) {
@@ -81,18 +86,16 @@ function renderJson(request) {
       $info.html(_html);
       if(request.request.queryString.length>0) {
             const queryString = new JSONFormatter(request.request.queryString);
-            $info.append(queryString.render());
+            $("#queryString").html(queryString.render())
       }
       if(request.request.postData){
-            const postData = new JSONFormatter(request.request.postData);
-            $info.append(postData.render());
+            const postData = new JSONFormatter(request.request.postData, 2, {});
+            $("#postData").html(postData.render());
       }
       if(request.responseBody) {
             const responseBody = new JSONFormatter(request.responseBody);
-            $info.append(responseBody.render());
+            $("#preview").html(responseBody.render());
       }
-
-
 }
 
 
@@ -101,6 +104,8 @@ $(function(){
             $("#requestTable .data").remove();
       });
       $("#requestTable").on("click", ".clickName", function(){
+            $(".clickName.active").removeClass("active");
+            $(this).addClass("active");
             var $right = $("#right");
             $("#requestTable").addClass("onlyName");
             $("#left").width("25%");
@@ -110,6 +115,13 @@ $(function(){
             // $("#info").append(responseBody.render());
             renderJson(requestArray[_index])
       });
+      $("#right").on("click", ".tabBtn", function() {
+            var _attr = $(this).attr("attr");
+            $(".tabBtn.active").removeClass("active");
+            $(this).addClass("active");
+            $(".tab").addClass("hide");
+            $("#"+_attr).removeClass("hide");
+      })
       // var box = document.querySelector(".footer");
       // var content = document.querySelector(".content");
       // var text = document.querySelector(".text");

@@ -4,7 +4,7 @@ html {
 body {
     height: 100%;
     overflow: hidden;
-    background-color: #efefef;
+    background-color: #f3f3f3;
     margin: 0;
 }
 .center{
@@ -16,7 +16,7 @@ body {
 #left {
     left: 0;
     width: 100%;
-    background-color: #efefef;
+    background-color: #f3f3f3;
     /*height: calc(100% - 22px);*/
     height:100%;
     border-right: 1px solid #bcbcbc;
@@ -27,6 +27,9 @@ body {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+.clickName.active {
+    background-color: #f1f6fd;
 }
 #left .container {
     background-color: white;
@@ -54,25 +57,27 @@ body {
 #right {
     width: 75%;
     height: 100%;
-    background: white;
     display:none;
-    padding: 20px;
+    background-color: #f3f3f3;
 }
-#info {
+.showInfo {
     font-size: 12px;
     color: #323232;
     line-height: 22px;
     letter-spacing: 0.1px;
     overflow-y:auto;
+    margin-top: 22px;
     height: 95%;
+    padding: 0 20px 20px 20px;
+    background: white;
 }
-#info .subtitle, .json-formatter-key {
+.showInfo .subtitle, .json-formatter-key {
     font-weight: 700;
 }
-#info .subtitle.indent {
+.showInfo .subtitle.indent {
     margin-left: 20px;
 }
-#info hr {
+.showInfo hr {
     border:0;
     background-color:#d6d6d6;
     height:1px;
@@ -88,7 +93,7 @@ body {
 #left #requestTable th {
     text-align: left;
     font-weight: normal;
-    background-color: #efefef;
+    background-color: #f3f3f3;
     border-bottom: 1px solid #d6d6d6;
     font-size: 12px;
     padding: 3px;
@@ -107,7 +112,7 @@ body {
 }
 
 #requestTable tr:nth-child(odd) {
-    background-color: #efefef;
+    background-color: #f3f3f3;
 }
 
 #clearBtn {
@@ -115,6 +120,8 @@ body {
     padding: 0 0 0 3px;
     font-size: 14px;
     font-weight: normal;
+    background-color: transparent;
+    cursor: pointer;
 }
 #clearBtn:active {
     color: #939393;
@@ -122,6 +129,37 @@ body {
 #clearBtn:focus {
     border: none;
     outline: none;
+}
+.tabBtnDiv {
+    position: fixed;
+    right: 25%;
+    left: 25%;
+}
+
+.tabBtn {
+    border: none;
+    font-size: 12px;
+    font-weight: normal;
+    padding: 3px 20px 3px 20px;
+    color: #323232;
+    background-color: transparent;
+    cursor: pointer;
+}
+.tabBtn:hover {
+    background-color: #eaeaea;
+}
+.tabBtn:active {
+    color: #939393;
+}
+.tabBtn:focus {
+    border: none;
+    outline: none;
+}
+.tabBtn.active {
+    border-bottom: 2px solid #1a73e8;
+}
+.tab.hide {
+    display: none;
 }
 
 .footer{
