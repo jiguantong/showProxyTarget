@@ -2,6 +2,7 @@
 chrome.devtools.panels.create('ProxyTarget', 'img/icon.png', 'mypanel.html', null);
 chrome.devtools.network.onRequestFinished.addListener(
   function (request) {
+        log(JSON.stringify(request))
         request.getContent((body)=> {
               if(body){
                     request.responseBody = JSON.parse(body);
@@ -16,9 +17,10 @@ chrome.devtools.network.onRequestFinished.addListener(
                     isXHR = true;
               }
         }
-        if(isXHR) {
+        //todo 解开
+        // if(isXHR) {
               appendRequest(request);
-        }
+        // }
   }
 );
 
@@ -39,23 +41,25 @@ function appendRequest(request) {
       data.status = request.response.status;
       data.time = request.time.toFixed(0);
       data.name = request.request.url.substr(request.request.url.lastIndexOf("/")+1);
-      $("#requestTable tr:last").after("<tr class=\"data\">" +
+      var $table = document.querySelector("#requestTable");
+      var $tr = document.createElement("tr");
+      $tr.className = 'data';
+      $tr.innerHTML = "<tr>" +
         "<td class='clickName' index='"+index+"'>"+data.name+"</td>" +
         "<td class='canHide'>"+data.status+"</td>" +
         "<td class='canHide'>"+data.type+"</td>" +
         "<td class='canHide'>"+data.size+" kB</td>" +
         "<td class='canHide'>"+data.time+" ms</td>" +
-        "</tr>");
+        "</tr>";
+      $table.appendChild($tr)
       requestArray.push(request);
       index++;
-      var $tableContainer = $("#tableContainer");
-      $tableContainer.animate({
-            scrollTop: $tableContainer.get(0).scrollHeight
-      }, 1);
+      var $tableContainer = document.querySelector("#tableContainer");
+      $tableContainer.scrollTop = $tableContainer.scrollHeight;
 }
 
 function renderJson(request) {
-      var $info = $("#info");
+      var $info = document.querySelector("#info");
       var _html = "";
       // General
       _html += "<span class='subtitle'>▼ General</span><br>" +
@@ -86,28 +90,40 @@ function renderJson(request) {
               "<br>"
       }
       _html += "<hr>";
-      $info.html(_html);
+      $info.innerHTML = _html;
+      var $queryString = document.querySelector("#queryString");
       if(request.request.queryString.length>0) {
             const queryString = new JSONFormatter(request.request.queryString, "Infinity");
-            $("#queryString").html(queryString.render())
+            $queryString.innerHTML = "";
+            $queryString.appendChild(queryString.render())
       }
+      var $postData = document.querySelector("#postData");
       if(request.request.postData){
             const postData = new JSONFormatter(request.request.postData, "Infinity", {});
-            $("#postData").html(postData.render());
+            $postData.innerHTML = "";
+            $postData.appendChild(postData.render());
             const postData2 = request.request.postData.text.replace(/\\"/g, '"').replace(/"{/g, "{")
               .replace(/}"/, "}");
             const postData3 = new JSONFormatter(JSON.parse(postData2), "Infinity");
-            $("#postData").append(postData3.render());
+            $postData.appendChild(postData3.render());
       }
+      var $responseBody = document.querySelector("#responseBody");
+      var $preview = document.querySelector("#preview");
       if(request.responseBody) {
             const responseBody = new JSONFormatter(request.responseBody);
-            $("#preview").html(responseBody.render());
-            $("#responseBody").html(JSON.stringify(request.responseBody, undefined, 4))
+            $preview.innerHTML = "";
+            $preview.appendChild(responseBody.render());
+            $responseBody.innerHTML = JSON.stringify(request.responseBody, undefined, 4)
       }
 }
 
+if(document.readyState !== 'loading') {
+      eventHandler();
+}else {
+      document.addEventListener("DOMContentLoaded", eventHandler);
+}
 
-$(function(){
+function eventHandler() {
       $("#clearBtn").on("click", function(){
             $("#requestTable .data").remove();
       });
@@ -131,5 +147,5 @@ $(function(){
             $(".tab").addClass("hide");
             $("#"+_attr).removeClass("hide");
       })
-});
+}
 
