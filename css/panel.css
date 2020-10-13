@@ -103,19 +103,23 @@ body {
     padding: 3px;
     border-right: 1px solid #d6d6d6;
 }
-#requestTable tr:not(:nth-child(1)):hover {
+#requestTbody tr:hover {
     background-color: #f1f6fd;
 }
 
-#requestTable tr:not(:nth-child(1)) td:nth-child(1) {
+#requestTbody tr td:nth-child(1) {
     cursor: pointer;
 }
 
-#requestTable tr:nth-child(odd) {
+#requestTbody tr:nth-child(even) {
     background-color: #f3f3f3;
 }
 
-#clearBtn {
+#closeBtn {
+    margin-left: 5px;
+}
+
+#clearBtn, #closeBtn {
     border: none;
     padding: 0 0 0 3px;
     font-size: 14px;
@@ -123,10 +127,10 @@ body {
     background-color: transparent;
     cursor: pointer;
 }
-#clearBtn:active {
+#clearBtn:active, #closeBtn:active {
     color: #939393;
 }
-#clearBtn:focus {
+#clearBtn:focus, #closeBtn:focus {
     border: none;
     outline: none;
 }
