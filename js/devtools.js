@@ -3,29 +3,32 @@ chrome.devtools.panels.create('ProxyTarget', 'img/icon.png', 'mypanel.html', nul
 chrome.devtools.network.onRequestFinished.addListener(
   function (request) {
         request.getContent((body)=> {
-              //continue with custom code
               if(body){
                     request.responseBody = JSON.parse(body);
               }
-              // chrome.devtools.inspectedWindow.eval(
-              //   'console.log('+
-              //   JSON.stringify(request) + ')'
-              //   // 'console.log(document.getElementsByClass("content"))'
-              // );
         });
+        var isXHR = false;
         for(var i=0;i<request.request.headers.length;i++){
               if(request.request.headers[i].name=='routeUrl'){
                     request.request.url = request.request.headers[i].value;
               }
+              if(request.request.headers[i].name == 'X-Requested-With' && request.request.headers[i].value == 'XMLHttpRequest') {
+                    isXHR = true;
+              }
         }
-        // chrome.devtools.inspectedWindow.eval(
-        //   'console.log('+
-        //   JSON.stringify(request) + ')'
-        //   // 'console.log(document.getElementsByClass("content"))'
-        // );
-        appendRequest(request);
+        if(isXHR) {
+              appendRequest(request);
+        }
   }
 );
+
+function log(info) {
+      chrome.devtools.inspectedWindow.eval(
+        'console.log('+
+        info + ')'
+      );
+}
+
 var requestArray = [];
 var index=0;
 function appendRequest(request) {
@@ -85,16 +88,21 @@ function renderJson(request) {
       _html += "<hr>";
       $info.html(_html);
       if(request.request.queryString.length>0) {
-            const queryString = new JSONFormatter(request.request.queryString);
+            const queryString = new JSONFormatter(request.request.queryString, "Infinity");
             $("#queryString").html(queryString.render())
       }
       if(request.request.postData){
-            const postData = new JSONFormatter(request.request.postData, 2, {});
+            const postData = new JSONFormatter(request.request.postData, "Infinity", {});
             $("#postData").html(postData.render());
+            const postData2 = request.request.postData.text.replace(/\\"/g, '"').replace(/"{/g, "{")
+              .replace(/}"/, "}");
+            const postData3 = new JSONFormatter(JSON.parse(postData2), "Infinity");
+            $("#postData").append(postData3.render());
       }
       if(request.responseBody) {
             const responseBody = new JSONFormatter(request.responseBody);
             $("#preview").html(responseBody.render());
+            $("#responseBody").html(JSON.stringify(request.responseBody, undefined, 4))
       }
 }
 
@@ -104,6 +112,7 @@ $(function(){
             $("#requestTable .data").remove();
       });
       $("#requestTable").on("click", ".clickName", function(){
+            $("#author").hide();
             $(".clickName.active").removeClass("active");
             $(this).addClass("active");
             var $right = $("#right");
@@ -122,33 +131,5 @@ $(function(){
             $(".tab").addClass("hide");
             $("#"+_attr).removeClass("hide");
       })
-      // var box = document.querySelector(".footer");
-      // var content = document.querySelector(".content");
-      // var text = document.querySelector(".text");
-      //
-      // var textWidth = text.offsetWidth;
-      // var boxWidth = box.offsetWidth;
-      // window.onload=function checkScrollLeft(){
-      //       // 判断文字长度是否大于盒子长度
-      //       if(boxWidth > textWidth){ return false}
-      //       content.innerHTML += content.innerHTML;
-      //       document.querySelector('.text').classList.add('padding');
-      //       // 更新
-      //       textWidth = document.querySelector('.text').offsetWidth;
-      //       toScrollLeft()
-      // };
-      // function toScrollLeft(){
-      //       //  如果文字长度大于滚动条距离，则递归拖动
-      //       if(textWidth > box.scrollLeft){
-      //             box.scrollLeft++;
-      //             setTimeout(function(){
-      //                   toScrollLeft();
-      //             }, 18);
-      //       }
-      //       else{
-      //             box.scrollLeft = 0;
-      //             toScrollLeft()
-      //       }
-      // }
 });
 
