@@ -1,6 +1,6 @@
 ## Release notes
 ### v0.1.3
-1. 移除jquery, 改用原生js, 防止加载失败
+1. 移除jquery, 改用原生js
 2. 优化错误处理, 减少插件报错
 3. 添加右侧面板关闭按钮
 4. 放宽xhr请求的判断, 包含content-type为application/json的请求
