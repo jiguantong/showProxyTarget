@@ -1,4 +1,4 @@
-chrome.devtools.panels.create('ProxyTarget', 'img/icon.png', 'showProxyTarget.html', null);
+chrome.devtools.panels.create('ProxyTarget', null, 'showProxyTarget.html', null);
 chrome.devtools.network.onRequestFinished.addListener(
     function (request) {
         var isXHR = false;
@@ -147,6 +147,7 @@ function eventHandler() {
 function clearTable() {
     var $requestTbody = document.getElementById("requestTbody");
     $requestTbody.innerHTML = "";
+    closeRight();
 }
 
 function closeRight() {

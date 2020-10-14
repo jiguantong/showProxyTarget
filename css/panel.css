@@ -109,6 +109,7 @@ body {
 
 #requestTbody tr td:nth-child(1) {
     cursor: pointer;
+    padding-left: 10px;
 }
 
 #requestTbody tr:nth-child(even) {

@@ -4,6 +4,7 @@
 2. 优化错误处理, 减少插件报错
 3. 添加右侧面板关闭按钮
 4. 放宽xhr请求的判断, 包含content-type为application/json的请求
+5. 去除panel icon, 降低加载失败的概率
 
 
 ## 安装说明
