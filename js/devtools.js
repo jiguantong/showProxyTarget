@@ -1,7 +1,6 @@
 chrome.devtools.panels.create('ProxyTarget', 'img/icon.png', 'showProxyTarget.html', null);
 chrome.devtools.network.onRequestFinished.addListener(
     function (request) {
-        log(JSON.stringify(request));
         var isXHR = false;
 
         for (var i = 0; i < request.response.headers.length; i++) {
@@ -115,7 +114,7 @@ function renderJson(request) {
     var $responseBody = document.getElementById("responseBody");
     var $preview = document.getElementById("preview");
     if (request.responseBody) {
-        const responseBody = new JSONFormatter(request.responseBody);
+        const responseBody = new JSONFormatter(request.responseBody, 2);
         $preview.innerHTML = "";
         $preview.appendChild(responseBody.render());
         $responseBody.innerHTML = JSON.stringify(request.responseBody, undefined, 4)
