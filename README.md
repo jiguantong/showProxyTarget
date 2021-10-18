@@ -1,11 +1,7 @@
-## Release notes
-### v0.1.3
-1. 移除jquery, 改用原生js
-2. 优化错误处理, 减少插件报错
-3. 添加右侧面板关闭按钮
-4. 放宽xhr请求的判断, 包含content-type为application/json的请求
-5. 去除panel icon, 降低加载失败的概率
+![预览](img/preview.png)
 
+
+> ## chrome插件, 增强network面板, 显示代理目标地址, 辅助ACE调试
 
 ## 安装说明
 1. 进入chrome扩展程序页面 [chrome://extensions/](chrome://extensions/)
@@ -17,8 +13,16 @@
 1. F12中最后面会加一个 "ProxyTarget" 的标签, 可以点击它按住鼠标拖动将其移至前面
 2. 在ProxyTarget面板会显示XHR请求, 点击对应请求的Name即可看到请求详情
 3. 右侧tab说明:
-    -   headers 是头部信息
+    -   Headers 是头部信息
     -   Preview 是json格式响应值
     -   Response 是json格式文本响应值
     -   QueryString 是get请求参数
     -   PostData 是post请求体
+    
+## Release notes
+### v0.1.3
+1. 移除jquery, 改用原生js
+2. 优化错误处理, 减少插件报错
+3. 添加右侧面板关闭按钮
+4. 放宽xhr请求的判断, 包含content-type为application/json的请求
+5. 去除panel icon, 降低加载失败的概率
